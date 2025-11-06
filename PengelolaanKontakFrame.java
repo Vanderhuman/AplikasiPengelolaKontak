@@ -32,14 +32,13 @@ public PengelolaanKontakFrame() {
         
         // Listener untuk JList kategori
 listKategori.addListSelectionListener(new ListSelectionListener() {
-    @Override
-    public void valueChanged(ListSelectionEvent evt) {
-        if (!evt.getValueIsAdjusting()) {
-            String kategoriDipilih = listKategori.getSelectedValue();
-            filterTabelByKategori(kategoriDipilih);
-        }
-    }
-});
+            @Override
+            public void valueChanged(ListSelectionEvent evt) {
+                if (!evt.getValueIsAdjusting()) {
+                    String kategoriDipilih = listKategori.getSelectedValue();
+                    filterTabelByKategori(kategoriDipilih);
+                }       }
+        });
         
 controller = new KontakController();
  model = new DefaultTableModel(new String[]
@@ -67,7 +66,7 @@ private void loadContacts() {
         int rowNumber = 1;
         for (Kontak contact : contacts) {
             model.addRow(new Object[]{
-                rowNumber++,
+                contact.getId(),
                 contact.getNama(),
                 contact.getNomorTelepon(),
                 contact.getKategori()
@@ -544,6 +543,11 @@ private boolean validateCSVHeader(String header) {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tblKontak.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblKontakMouseClicked(evt);
+            }
+        });
         jScrollPane4.setViewportView(tblKontak);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -661,7 +665,10 @@ private boolean validateCSVHeader(String header) {
     }//GEN-LAST:event_btnHapusActionPerformed
 
     private void txtPencarianKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPencarianKeyTyped
-        //searchContact();        // TODO add your handling code here:
+    String keyword = txtPencarian.getText().trim();
+    if (!keyword.isEmpty()) {  
+                loadContacts();
+    }// TODO add your handling code here:
     }//GEN-LAST:event_txtPencarianKeyTyped
 
     private void btnExportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportActionPerformed
@@ -692,6 +699,14 @@ private boolean validateCSVHeader(String header) {
     private void btnCariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCariActionPerformed
         searchContact();        // TODO add your handling code here:
     }//GEN-LAST:event_btnCariActionPerformed
+
+    private void tblKontakMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblKontakMouseClicked
+        int selectedRow = tblKontak.getSelectedRow();
+        if (selectedRow != -1) {
+        populateInputFields(selectedRow);
+ }
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tblKontakMouseClicked
 
     /**
      * @param args the command line arguments
